@@ -36,6 +36,7 @@
             months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
             dow: ["S", "M", "T", "W", "T", "F", "S"],
             navigate: "buttons",
+            zoom: true,
             scale: "days",
             useCookie: false,
             maxScale: "months",
@@ -409,7 +410,7 @@
 
             // Creates and return the right panel containing the year/week/day
             // header
-            rightPanel: function (element, leftPanel /* <- never used? */) {
+            rightPanel: function (element) {
 
                 var range = null;
                 // Days of the week have a class of one of
@@ -755,9 +756,27 @@
             // **Navigation**
             navigation: function (element) {
                 var ganttNavigate = null;
+                var ganttZoomPlus = null,
+                    ganttZoomMinus = null;
+
+                if (settings.zoom) {
+                    ganttZoomPlus = $('<button type="button" class="nav-link nav-zoomIn"/>')
+                        .html('&#43;')
+                        .click(function () {
+                            core.zoomInOut(element, -1);
+                        });
+
+                    ganttZoomMinus = $('<button type="button" class="nav-link nav-zoomOut"/>')
+                        .html('&#45;')
+                        .click(function () {
+                            core.zoomInOut(element, 1);
+                        });
+                }
+
                 // Scrolling navigation is provided by setting
                 // `settings.navigate='scroll'`
                 if (settings.navigate === "scroll") {
+
                     ganttNavigate = $('<div class="navigate" />')
                         .append($('<div class="nav-slider" />')
                             .append($('<div class="nav-slider-left" />')
@@ -848,16 +867,8 @@
                                             core.navigateTo(element, tools.getCellSize() * -6);
                                         }
                                     }))
-                                .append($('<button type="button" class="nav-link nav-zoomIn"/>')
-                                    .html('&#43;')
-                                    .click(function () {
-                                        core.zoomInOut(element, -1);
-                                    }))
-                                .append($('<button type="button" class="nav-link nav-zoomOut"/>')
-                                    .html('&#45;')
-                                    .click(function () {
-                                        core.zoomInOut(element, 1);
-                                    }))
+                                .append(ganttZoomPlus)
+                                .append(ganttZoomMinus)
                                     )
                                 );
                     $(document).mouseup(function () {
@@ -914,16 +925,8 @@
                             .click(function () {
                                 core.navigateTo(element, 'end');
                             }))
-                        .append($('<button type="button" class="nav-link nav-zoomIn"/>')
-                            .html('&#43;')
-                            .click(function () {
-                                core.zoomInOut(element, -1);
-                            }))
-                        .append($('<button type="button" class="nav-link nav-zoomOut"/>')
-                            .html('&#45;')
-                            .click(function () {
-                                core.zoomInOut(element, 1);
-                            }));
+                        .append(ganttZoomPlus)
+                        .append(ganttZoomMinus);
                 }
                 return $('<div class="bottom"/>').append(ganttNavigate);
             },
