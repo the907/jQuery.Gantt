@@ -755,6 +755,10 @@
 
             // **Navigation**
             navigation: function (element) {
+                if (settings.navigate === "none") {
+                    return $('<div class="bottom"/>');
+                }
+
                 var ganttNavigate = null;
                 var ganttZoomPlus = null,
                     ganttZoomMinus = null;
