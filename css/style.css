@@ -29,7 +29,11 @@
     width: 100%;
 }
 
+.fn-gantt .fn-scroll {
+    overflow-y: scroll;
+    max-height: 300px;
 
+}
 
 
 /* === LEFT PANEL === */

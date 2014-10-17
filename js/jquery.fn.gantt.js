@@ -42,6 +42,7 @@
             maxScale: "months",
             minScale: "hours",
             waitText: "Please wait...",
+            verticalScroll: false,
             onItemClick: function (data) { return; },
             onAddClick: function (data) { return; },
             onRender: function() { return; },
@@ -255,9 +256,18 @@
                 core.waitToggle(element, true, function () { core.render(element); });
             },
 
+
+            mainContent : function () {
+                if (settings.verticalScroll) {
+                    return $('<div class="fn-content fn-scroll"/>')
+                } else {
+                    return $('<div class="fn-content"/>');
+                }
+            },
+
             // **Render the grid**
             render: function (element) {
-                var content = $('<div class="fn-content"/>');
+                var content = core.mainContent();
                 var $leftPanel = core.leftPanel(element);
                 content.append($leftPanel);
                 var $rightPanel = core.rightPanel(element, $leftPanel);
